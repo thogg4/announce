@@ -1,0 +1,13 @@
+bundleinstall:
+  image: ruby:2.1.2
+  command: bundle install --system
+  working_dir: /usr/src/app
+  volumes:
+    - ~/announce:/usr/src/app
+
+bundleupdate:
+  image: ruby:2.1.2
+  command: bundle update
+  working_dir: /usr/src/app
+  volumes:
+    - ~/announce:/usr/src/app
