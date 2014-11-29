@@ -1,13 +1,52 @@
+util:
+  image: thogg4/announce
+  command: echo 'You must pass a command to util'
+  working_dir: /usr/src/app
+  volumes:
+    - /app:/usr/src/app
+  environment:
+    - POSTGRESQL_DB=announce
+    - POSTGRESQL_USER=postgres
+    - POSTGRESQL_PASS=announce
+    - POSTGRESQL_HOST=172.17.42.1
+
 bundleinstall:
   image: ruby:2.1.2
   command: bundle install --system
   working_dir: /usr/src/app
   volumes:
-    - ~/announce:/usr/src/app
+    - /app:/usr/src/app
 
 bundleupdate:
   image: ruby:2.1.2
   command: bundle update
   working_dir: /usr/src/app
   volumes:
-    - ~/announce:/usr/src/app
+    - /app:/usr/src/app
+
+app:
+  image: thogg4/announce
+  ports:
+    - 8080:8080
+  volumes:
+    - /app:/usr/src/app
+  environment:
+    - POSTGRESQL_DB=announce
+    - POSTGRESQL_USER=postgres
+    - POSTGRESQL_PASS=announce
+    - POSTGRESQL_HOST=172.17.42.1
+    - email_username=
+    - email_password=
+
+postgres:
+  image: wyaeld/postgres:9.4
+  ports:
+    - 5432:5432
+  volumes:
+    - /data/postgres:/var/lib/postgresql
+    - /log/postgres:/var/log/postgres
+  environment:
+    - POSTGRESQL_DB=announce
+    - POSTGRESQL_USER=postgres
+    - POSTGRESQL_PASS=announce
+    - POSTGRESQL_HOST=172.17.42.1

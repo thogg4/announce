@@ -1,1 +1,27 @@
-bang
+.row
+  .col-sm-8
+    h2 Deliveries
+    - @deliveries.each do |delivery|
+      div class="delivery well-sm #{delivery.active? ? 'active' : 'inactive'}"
+        .row
+          .col-sm-6
+            h4 = delivery.name
+          .col-sm-3
+            a.btn.btn-default href="/deliveries/#{delivery.id}" Edit
+          .col-sm-3
+            - if delivery.active?
+              a.btn.btn-lg.btn-danger href="/deliveries/#{delivery.id}/send" Send
+
+  .col-sm-4
+    h2 New Delivery
+    form action='/deliveries/new' method='post'
+      input.form-control type='text' name='delivery[name]' placeholder='Name'
+      
+      .checkbox
+        label
+          input type='checkbox' name='delivery[active]' Active
+      
+      input.btn.btn-default type='submit' value='Create'
+
+
+

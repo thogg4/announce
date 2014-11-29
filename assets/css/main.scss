@@ -1,0 +1,12 @@
+.delivery {
+  border: 1px solid #EEEEEE;
+  border-left-width: 5px;
+
+  &.active {
+    border-left-color: #3c763d;
+  }
+
+  &.inactive {
+    border-left-color: #d9534f;
+  }
+}

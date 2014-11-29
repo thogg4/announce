@@ -1,0 +1,25 @@
+- name: bootstrap coreos hosts
+  hosts: all
+  gather_facts: False
+  roles:
+    - defunctzombie.coreos-bootstrap
+
+- name: basic stuff
+  hosts: all
+  sudo: true
+  tasks:
+    - name: Start etcd
+      service: name=etcd.service state=started
+
+- name: set up docker
+  hosts: all
+  gather_facts: False
+  roles:
+    - docker
+
+- name: app stuff
+  hosts: all
+  sudo: true
+  tasks:
+    - name: pull docker image
+      command: docker pull thogg4/announce

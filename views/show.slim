@@ -1,0 +1,51 @@
+.row
+  .col-sm-8
+    h2 Emails for #{@delivery.name}
+    - @emails.each do |email|
+      div class="delivery well-sm #{email.active? ? 'active' : 'inactive'}"
+        form action="/deliveries/#{@delivery.id}/emails/#{email.id}" method='post'
+          input.form-control type='text' name='email[email]' value="#{email.email}"
+
+          .checkbox
+            label
+              input type='hidden' name='email[active]' value='0'
+              - if email.active?
+                input type='checkbox' name='email[active]' checked='checked' value='1'
+              - else
+                input type='checkbox' name='email[active]' value='1'
+              | Active
+
+          input.btn.btn-default type='submit' value='Save'
+
+
+  .col-sm-4
+    h2 Edit #{@delivery.name}
+    form action="/deliveries/#{@delivery.id}" method='post'
+      input.form-control type='text' name='delivery[name]' placeholder='Name' value='#{@delivery.name}'
+
+      input.form-control type='text' name='delivery[subject]' placeholder='Subject' value='#{@delivery.subject}'
+      textarea.form-control name='delivery[message]'
+        = @delivery.message
+      
+      .checkbox
+        label
+          input type='hidden' name='delivery[active]' value='0'
+          - if @delivery.active?
+            input type='checkbox' name='delivery[active]' checked='checked' value='1'
+          - else
+            input type='checkbox' name='delivery[active]' value='1'
+          | Active
+      
+      input.btn.btn-default type='submit' value='Save'
+
+
+    h2 Add Email
+    form action="/deliveries/#{@delivery.id}/emails/new" method='post'
+      input.form-control type='text' name='email[email]' placeholder='Email'
+      
+      .checkbox
+        label
+          input type='checkbox' name='email[active]' Active
+      
+      input type='hidden' name='email[delivery_id]' value="#{@delivery.id}"
+      input.btn.btn-default type='submit' value='Create'

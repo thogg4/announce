@@ -1,0 +1,31 @@
+---
+
+- name: add docker_opts
+  sudo: true
+  lineinfile:
+    dest: /etc/default/docker
+    line: "DOCKER_OPTS='-H unix:///var/run/docker.sock -H tcp://0.0.0.0:5555 --dns 172.17.42.1 --dns 8.8.8.8 --dns-search service.consul'"
+    state: present
+    create: yes
+
+- name: create docker systemd unit
+  sudo: true
+  copy:
+    src: docker-tcp.socket
+    dest: /etc/systemd/system/docker-tcp.socket
+
+- name: enable docker socket
+  sudo: true
+  command: systemctl enable docker-tcp.socket
+
+- name: stop docker
+  sudo: true
+  command: systemctl stop docker
+
+- name: start docker socket
+  sudo: true
+  command: systemctl start docker-tcp.socket
+
+- name: start docker
+  sudo: true
+  command: systemctl start docker
