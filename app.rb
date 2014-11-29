@@ -1,6 +1,8 @@
 class Announce < Sinatra::Base
   set :root, File.dirname(__FILE__)
 
+  after { ActiveRecord::Base.connection.close }
+
   register Sinatra::AssetPack
   assets do
     serve '/css', from: 'assets/css'
